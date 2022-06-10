@@ -9,20 +9,20 @@ def event_handler(gun):
             sys.exit()
         elif event.type == pygame.KEYDOWN:
             # move right
-            if event.key == pygame.K_d:
+            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 gun.move_right = True
             # move left
-            elif event.key == pygame.K_a:
+            elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
                 gun.move_left = True
             # exit on esc
             elif event.key == pygame.K_ESCAPE:
                 sys.exit()
         elif event.type == pygame.KEYUP:
             # stop moving right
-            if event.key == pygame.K_d:
+            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 gun.move_right = False
             # stop moving left
-            elif event.key == pygame.K_a:
+            elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
                 gun.move_left = False
 
 
