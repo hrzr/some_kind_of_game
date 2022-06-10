@@ -10,7 +10,8 @@ class Gun:
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
         self.rect.centerx = self.screen_rect.centerx
-        self.rect.bottom = self.screen_rect.bottom
+        self.margin = 10
+        self.rect.bottom = self.screen_rect.bottom - self.margin
         self.move_right = False
         self.move_left = False
 
@@ -20,7 +21,7 @@ class Gun:
 
     def move(self):
         """Updates the gun's position on the screen"""
-        if self.move_right:
+        if self.move_right and self.rect.right <= self.screen_rect.right - self.margin:
             self.rect.centerx += 1
-        elif self.move_left:
+        elif self.move_left and self.rect.left >= self.screen_rect.left + self.margin:
             self.rect.centerx -= 1
