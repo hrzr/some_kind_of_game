@@ -9,13 +9,18 @@ def run():
     pygame.display.set_caption("Space invaders")
     bg_color = (0, 0, 0)
     game_weapon = gun.Gun(screen)
+    bullets = list()
 
     while True:
-        controls.event_handler(game_weapon)
+        controls.event_handler(screen, game_weapon, bullets)
+        for bullet in bullets:
+            if bullet.rect.bottom <= 0:
+                bullets.remove(bullet)
+            else:
+                bullet.move()
         game_weapon.move()
-        screen.fill(bg_color)
-        game_weapon.output()
-        pygame.display.flip()
+        controls.screen_update(bg_color, screen, game_weapon, bullets)
 
 
-run()
+if __name__ == "__main__":
+    run()
