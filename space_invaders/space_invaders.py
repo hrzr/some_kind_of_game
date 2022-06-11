@@ -13,11 +13,7 @@ def run():
 
     while True:
         controls.event_handler(screen, game_weapon, bullets)
-        for bullet in bullets:
-            if bullet.rect.bottom <= 0:
-                bullets.remove(bullet)
-            else:
-                bullet.move()
+        controls.bullets_update(bullets)
         game_weapon.move()
         controls.screen_update(bg_color, screen, game_weapon, bullets)
 

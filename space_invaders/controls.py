@@ -38,3 +38,11 @@ def screen_update(bg_color, screen, gun, bullets):
     gun.output()
     pygame.display.flip()
 
+
+def bullets_update(bullets):
+    for bullet in bullets:
+        if bullet.rect.bottom <= 0:
+            bullets.remove(bullet)
+        else:
+            bullet.move()
+
