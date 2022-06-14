@@ -1,6 +1,7 @@
 import pygame
 import gun
 import controls
+import invader
 
 
 def run():
@@ -10,12 +11,13 @@ def run():
     bg_color = (0, 0, 0)
     game_weapon = gun.Gun(screen)
     bullets = list()
+    inv = invader.Invader(screen)
 
     while True:
         controls.event_handler(screen, game_weapon, bullets)
         controls.bullets_update(bullets)
         game_weapon.move()
-        controls.screen_update(bg_color, screen, game_weapon, bullets)
+        controls.screen_update(bg_color, screen, game_weapon, inv, bullets)
 
 
 if __name__ == "__main__":

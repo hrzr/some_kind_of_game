@@ -30,12 +30,13 @@ def event_handler(screen, gun, bullets):
                 gun.move_left = False
 
 
-def screen_update(bg_color, screen, gun, bullets):
+def screen_update(bg_color, screen, gun, invader, bullets):
     """Updates game screen"""
     screen.fill(bg_color)
     for bullet in bullets:
         bullet.output()
     gun.output()
+    invader.output()
     pygame.display.flip()
 
 
