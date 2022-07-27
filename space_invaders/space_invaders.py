@@ -1,23 +1,30 @@
 import pygame
-import gun
 import controls
-import invader
+from gun import Gun
+from pygame.sprite import Group
+
+SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 800, 700
 
 
 def run():
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode(SCREEN_SIZE)
     pygame.display.set_caption("Space invaders")
-    bg_color = (0, 0, 0)
-    game_weapon = gun.Gun(screen)
-    bullets = list()
-    inv = invader.Invader(screen)
+    bg_color = 0, 0, 0
+    gun = Gun(screen)
+    bullets = Group()
+    invaders = Group()
+    controls.create_army(screen, invaders)
 
     while True:
-        controls.event_handler(screen, game_weapon, bullets)
-        controls.bullets_update(bullets)
-        game_weapon.move()
-        controls.screen_update(bg_color, screen, game_weapon, inv, bullets)
+        controls.events(screen, gun, bullets)
+        gun.move()
+        bullets.update()
+        controls.update(bg_color, screen, gun, invaders, bullets)
+        controls.update_bullets(bullets)
+        controls.update_invaders(invaders)
+
+
 
 
 if __name__ == "__main__":

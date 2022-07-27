@@ -1,27 +1,24 @@
 import pygame
 
+
 class Bullet(pygame.sprite.Sprite):
 
     def __init__(self, screen, gun):
-        """Create a bullet at the gun center position"""
+        """Create bullet at gun"""
         super(Bullet, self).__init__()
         self.screen = screen
-        self.image = pygame.image.load("art/02_bullet.png")
-        self.rect = self.image.get_rect()
-        self.rect.centerx = gun.rect.centerx
+        self.rect = pygame.Rect(0, 0, 2, 12)
+        self.color = 0, 255, 0
         self.speed = 1.5
-        self.rect.top = gun.rect.top + 50
+        self.rect.centerx = gun.rect.centerx
+        self.rect.top = gun.rect.top + 60
         self.y = float(self.rect.y)
 
-    def move(self):
-        """Movement logic of the bullet"""
+    def update(self):
+        """Move the bullet up"""
         self.y -= self.speed
-        self.rect.centery = self.y
+        self.rect.y = self.y
 
-    def output(self):
-        """Draw the bullet on the screen"""
-        self.screen.blit(self.image, self.rect)
-
-
-
-
+    def draw_bullet(self):
+        """Draw a bullet"""
+        pygame.draw.rect(self.screen, self.color, self.rect)
