@@ -3,7 +3,7 @@ import sys
 import time
 from bullet import Bullet
 from invader import Invader
-from space_invaders import SCREEN_WIDTH, SCREEN_HEIGHT
+from constants import *
 
 
 def events(screen, gun, bullets):
@@ -27,8 +27,9 @@ def events(screen, gun, bullets):
                 gun.move_left = False
 
 
-def update(bg_color, screen, gun, invaders, bullets):
+def update(bg_color, screen, stats, score, gun, invaders, bullets):
     screen.fill(bg_color)
+    score.show()
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     gun.output()
@@ -36,16 +37,19 @@ def update(bg_color, screen, gun, invaders, bullets):
     pygame.display.flip()
 
 
-def update_bullets(screen, invaders, bullets):
+def update_bullets(screen, stats, score, invaders, bullets):
     """Update bullets positions"""
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom < 0:
             bullets.remove(bullet)
     collisions = pygame.sprite.groupcollide(bullets, invaders, True, True)
+    if collisions:
+        stats.score += 10 * len(*collisions.values())
+        score.create()
     if len(invaders) == 0:
         bullets.empty()
-        time.sleep(2)
+        time.sleep(0.5)
         create_army(screen, invaders)
 
 
@@ -72,19 +76,23 @@ def create_army(screen, invaders):
 
 def gun_kill(stats, screen, invaders, gun, bullets):
     """Detect collision between invaders army and gun"""
-    stats.guns_left -= 1
-    invaders.empty()
-    bullets.empty()
-    create_army(screen, invaders)
-    gun.create_gun()
-    time.sleep(2)
+    if stats.guns_left > 0:
+        stats.guns_left -= 1
+        invaders.empty()
+        bullets.empty()
+        create_army(screen, invaders)
+        gun.create_gun()
+        time.sleep(2)
+    else:
+        stats.run_game = False
+        sys.exit()
 
 
-def invaders_check_bottom(stats, screen, invaders,gun, bullets):
+def invaders_check_bottom(stats, screen, invaders, gun, bullets):
     """Check if any of invaders are at the bottom of the screen"""
     screen_rect = screen.get_rect()
     for invader in invaders.sprites():
-        if invader.rect.bottom > screen_rect.bottom - gun.rect.height:
+        if invader.rect.bottom > screen_rect.bottom - gun.rect.height - MARGIN:
             gun_kill(stats, screen, invaders, gun, bullets)
             break
 
