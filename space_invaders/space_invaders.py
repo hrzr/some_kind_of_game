@@ -2,6 +2,7 @@ import pygame
 import controls
 from gun import Gun
 from pygame.sprite import Group
+from stats import Stats
 
 SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 800, 700
 
@@ -15,16 +16,15 @@ def run():
     bullets = Group()
     invaders = Group()
     controls.create_army(screen, invaders)
+    stats = Stats()
 
     while True:
         controls.events(screen, gun, bullets)
         gun.move()
         bullets.update()
         controls.update(bg_color, screen, gun, invaders, bullets)
-        controls.update_bullets(bullets)
-        controls.update_invaders(invaders)
-
-
+        controls.update_bullets(screen, invaders, bullets)
+        controls.update_invaders(stats, screen, invaders, gun, bullets)
 
 
 if __name__ == "__main__":

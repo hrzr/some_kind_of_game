@@ -28,4 +28,7 @@ class Gun:
         """Draw the gun"""
         self.screen.blit(self.image, self.rect)
 
+    def create_gun(self):
+        """Places a gun in the center of the screen"""
+        self.center = self.screen_rect.centerx
 

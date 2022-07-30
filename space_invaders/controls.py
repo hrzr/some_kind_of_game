@@ -1,5 +1,6 @@
 import pygame
 import sys
+import time
 from bullet import Bullet
 from invader import Invader
 from space_invaders import SCREEN_WIDTH, SCREEN_HEIGHT
@@ -35,16 +36,22 @@ def update(bg_color, screen, gun, invaders, bullets):
     pygame.display.flip()
 
 
-def update_bullets(bullets):
+def update_bullets(screen, invaders, bullets):
     """Update bullets positions"""
     bullets.update()
     for bullet in bullets.copy():
         if bullet.rect.bottom < 0:
             bullets.remove(bullet)
+    collisions = pygame.sprite.groupcollide(bullets, invaders, True, True)
+    if len(invaders) == 0:
+        bullets.empty()
+        time.sleep(2)
+        create_army(screen, invaders)
 
 
-def update_invaders(invaders):
+def update_invaders(stats, screen, invaders, gun, bullets):
     invaders.update()
+    invaders_check_bottom(stats, screen, invaders, gun, bullets)
 
 
 def create_army(screen, invaders):
@@ -61,3 +68,23 @@ def create_army(screen, invaders):
             invader.rect.x = invader.x
             invader.rect.y = invader.rect.height + invader.rect.height * invaders_row
             invaders.add(invader)
+
+
+def gun_kill(stats, screen, invaders, gun, bullets):
+    """Detect collision between invaders army and gun"""
+    stats.guns_left -= 1
+    invaders.empty()
+    bullets.empty()
+    create_army(screen, invaders)
+    gun.create_gun()
+    time.sleep(2)
+
+
+def invaders_check_bottom(stats, screen, invaders,gun, bullets):
+    """Check if any of invaders are at the bottom of the screen"""
+    screen_rect = screen.get_rect()
+    for invader in invaders.sprites():
+        if invader.rect.bottom > screen_rect.bottom - gun.rect.height:
+            gun_kill(stats, screen, invaders, gun, bullets)
+            break
+
