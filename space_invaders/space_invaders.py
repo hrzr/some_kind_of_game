@@ -25,7 +25,7 @@ def run():
             gun.move()
             controls.update(bg_color, screen, stats, score, gun, invaders, bullets)
             controls.update_bullets(screen, stats, score, invaders, bullets)
-            controls.update_invaders(stats, screen, invaders, gun, bullets)
+            controls.update_invaders(stats, screen, score, invaders, gun, bullets)
 
 
 if __name__ == "__main__":

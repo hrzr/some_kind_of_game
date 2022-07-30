@@ -29,7 +29,7 @@ def events(screen, gun, bullets):
 
 def update(bg_color, screen, stats, score, gun, invaders, bullets):
     screen.fill(bg_color)
-    score.show()
+    score.show_score()
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     gun.output()
@@ -45,17 +45,20 @@ def update_bullets(screen, stats, score, invaders, bullets):
             bullets.remove(bullet)
     collisions = pygame.sprite.groupcollide(bullets, invaders, True, True)
     if collisions:
-        stats.score += 10 * len(*collisions.values())
+        for collision in collisions.values():
+            stats.score += 10 * len(collision)
         score.create()
+        check_high_score(stats, score)
+        score.create_lives()
     if len(invaders) == 0:
         bullets.empty()
         time.sleep(0.5)
         create_army(screen, invaders)
 
 
-def update_invaders(stats, screen, invaders, gun, bullets):
+def update_invaders(stats, screen, scores, invaders, gun, bullets):
     invaders.update()
-    invaders_check_bottom(stats, screen, invaders, gun, bullets)
+    invaders_check_bottom(stats, screen, scores, invaders, gun, bullets)
 
 
 def create_army(screen, invaders):
@@ -74,10 +77,11 @@ def create_army(screen, invaders):
             invaders.add(invader)
 
 
-def gun_kill(stats, screen, invaders, gun, bullets):
+def gun_kill(stats, screen, scores, invaders, gun, bullets):
     """Detect collision between invaders army and gun"""
     if stats.guns_left > 0:
         stats.guns_left -= 1
+        scores.create_lives()
         invaders.empty()
         bullets.empty()
         create_army(screen, invaders)
@@ -88,11 +92,19 @@ def gun_kill(stats, screen, invaders, gun, bullets):
         sys.exit()
 
 
-def invaders_check_bottom(stats, screen, invaders, gun, bullets):
+def invaders_check_bottom(stats, screen, scores, invaders, gun, bullets):
     """Check if any of invaders are at the bottom of the screen"""
     screen_rect = screen.get_rect()
     for invader in invaders.sprites():
         if invader.rect.bottom > screen_rect.bottom - gun.rect.height - MARGIN:
-            gun_kill(stats, screen, invaders, gun, bullets)
+            gun_kill(stats, screen, scores, invaders, gun, bullets)
             break
 
+
+def check_high_score(stats, score):
+    """Check if current score is highscore"""
+    if stats.score >= stats.high_score:
+        stats.high_score = stats.score
+        score.create_high_score()
+        with open(HIGHSCORE_FILE, 'w') as high_score_file:
+            high_score_file.write(f"{stats.high_score  }")
