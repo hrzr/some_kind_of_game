@@ -106,5 +106,6 @@ def check_high_score(stats, score):
     if stats.score >= stats.high_score:
         stats.high_score = stats.score
         score.create_high_score()
+        # file input-output is very slow, should move it somewhere
         with open(HIGHSCORE_FILE, 'w') as high_score_file:
             high_score_file.write(f"{stats.high_score  }")
