@@ -1,4 +1,5 @@
 import random
+import sys
 
 
 class GameField:
@@ -76,18 +77,22 @@ class Tile:
             raise AttributeError(f"Cannot create a tile with symbol \"{tile_type}\"")
 
 
+def handle_commands(command, game_field):
+    if command == "left":
+        game_field.move_cursor(-1, 0)
+    elif command == "right":
+        game_field.move_cursor(1, 0)
+    elif command == "up":
+        game_field.move_cursor(0, -1)
+    elif command == "down":
+        game_field.move_cursor(0, 1)
+    elif command == "quit" or command == "exit":
+        sys.exit()
+
+
 if __name__ == "__main__":
     field = GameField()
     while True:
         field.info()
-        command = input("> ").lower()
-        if command == "left":
-            field.move_cursor(-1, 0)
-        elif command == "right":
-            field.move_cursor(1, 0)
-        elif command == "up":
-            field.move_cursor(0, -1)
-        elif command == "down":
-            field.move_cursor(0, 1)
-        elif command == "quit":
-            break
+        handle_commands(input("> ").lower(), field)
+
