@@ -27,29 +27,29 @@ class GameField:
                     self.game_field[i][j] = self.game_tokens.pop()
         # set cursor at (0, 0)
         self.cursor_position = {'x': 0, 'y': 0}
-        self._make_upper()
+        self.__make_upper()
 
     def move_cursor(self, move_x, move_y):
         """Moves cursor"""
         if ((move_x < 0) and (self.cursor_position['x'] > 0)) or \
                 ((move_x > 0) and (self.cursor_position['x'] < len(self.game_field[0]) - 1)):
-            self._make_lower()
+            self.__make_lower()
             self.cursor_position['x'] += move_x
             if self.game_field[self.cursor_position['y']][self.cursor_position['x']] in ('a', 'b', 'c'):
-                self._make_upper()
+                self.__make_upper()
         if ((move_y < 0) and (self.cursor_position['y'] > 0)) or \
                 ((move_y > 0) and (self.cursor_position['y'] < len(self.game_field) - 1)):
-            self._make_lower()
+            self.__make_lower()
             self.cursor_position['y'] += move_y
             if self.game_field[self.cursor_position['y']][self.cursor_position['x']] in ('a', 'b', 'c'):
-                self._make_upper()
+                self.__make_upper()
 
-    def _make_lower(self):
+    def __make_lower(self):
         """Make the symbol lower at current position"""
         self.game_field[self.cursor_position['y']][self.cursor_position['x']] \
             = self.game_field[self.cursor_position['y']][self.cursor_position['x']].lower()
 
-    def _make_upper(self):
+    def __make_upper(self):
         """Make symbol upper at current position"""
         self.game_field[self.cursor_position['y']][self.cursor_position['x']] = \
             self.game_field[self.cursor_position['y']][self.cursor_position['x']].upper()
@@ -59,9 +59,9 @@ class GameField:
 
     def info(self):
         """Shows game field"""
-        print("  1 2 3 4 5")
+        print("  0 1 2 3 4")
         for row_number, row in enumerate(self.game_field):
-            print(f"{row_number + 1} ", end='')
+            print(f"{row_number} ", end='')
             print(' '.join(row))
         print(self.cursor_position)
         print(f"It's tile: {self.is_tile()}")
