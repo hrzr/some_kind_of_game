@@ -23,6 +23,5 @@ def run():
         pygame.display.flip()
 
 
-
 if __name__ == "__main__":
     run()

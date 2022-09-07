@@ -5,7 +5,6 @@ from constants import *
 class Tile:
 
     __sprite = "art/04_box.png"
-    __aspect = 4
 
     def __init__(self, screen, left, top):
         self.screen = screen
@@ -13,7 +12,7 @@ class Tile:
         self.rect = self.img.get_rect()
         self.img = pygame.transform.scale(
             self.img,
-            (self.rect.width * self.__aspect, self.rect.height * self.__aspect)
+            (self.rect.width * ASPECT, self.rect.height * ASPECT)
         )
         self.rect = self.img.get_rect()
         self.rect.top = top + MARGIN
